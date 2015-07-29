@@ -18,6 +18,7 @@ options{
 
 program: class_decl+;
 
+<<<<<<< HEAD
 
 // student for recognizer start from here
 
@@ -115,3 +116,14 @@ BOOLLIT:['true''false'];
 ASSIGN: ':=';
 CONTANT_ASSIGN: '=';
 UNCLOSE_STRING: '\"'  {System.out.print("There is an unclosed string.");};
+=======
+// student for recognizer start from here
+class_decl:  STRING_LITERAL+  ;
+
+// student for Lexer start from here
+WS               :   [ \t\r\f\n]+ -> skip ;
+
+STRING_LITERAL:  '\"'  '\"';
+UNCLOSE_STRING: '\"'  {System.out.print("There is an unclosed string.");};
+
+>>>>>>> 18aa50a7da878f408fc6c4d90dadf1bcece7e44b
