@@ -5,15 +5,15 @@
 grammar BKOOL;
 
 @lexer::header{
-	package bkool.parser;
+    package bkool.parser;
 }
 
 @parser::header{
-	package bkool.parser;
+    package bkool.parser;
 }
 
 options{
-	language=Java;
+    language=Java;
 }
 
 program: class_decl+;
@@ -21,7 +21,6 @@ program: class_decl+;
 
 // student for recognizer start from here
 
-<<<<<<< HEAD
 class_decl: CLASS IDENTIFIER (EXTENDS IDENTIFIER)? LEFT_PARENTHESIS member* RIGH_PARENTHESIS  ;
 member: constant_decl | variable_decl | method_decl;
 method_decl: return_type (STATIC)? IDENTIFIER ((IDENTIFIER)+':'type)+ block_statement '}'
@@ -42,34 +41,13 @@ variable_decl: (STATIC)? IDENTIFIER+ ':' type ;
 
 
 
-=======
-class_decl:  CLASS identifier (EXTENDS identifier)? '{' member* '}'  ;
-member: constant_decl | variable_decl | method_decl;
-method_decl: return_type ('static')+ identifier ((identifier)+':'type)+ block_statement '}'
-            | identifier ((identifier)+':'type)+ block_statement ;
-
-constant_decl: ('static')? 'final' type identifier '=' expression;
-
-variable_decl: ('static')? 'final' identifier+ ':' type ;
-
-
-
-
-
-identifier: IDENTIFIER ;
->>>>>>> 18aa50a7da878f408fc6c4d90dadf1bcece7e44b
 
 
 
 
 
 // student for Lexer start from here
-<<<<<<< HEAD
 
-=======
-WS               :   [ \t\r\f\n]+ -> skip ;
-IDENTIFIER : [a-zA-Z_][A-Za-z_0-9]*;
->>>>>>> 18aa50a7da878f408fc6c4d90dadf1bcece7e44b
 //keywords
 CLASS: 'class';
 BREAK: 'break';
@@ -122,11 +100,8 @@ SEMICOLON: ';';
 COLON: ':';
 DOT: '.';
 COMMA: ',';
-<<<<<<< HEAD
 WS               :   [ \t\r\f\n]+ -> skip ;
 IDENTIFIER : [a-zA-Z_][A-Za-z_0-9]*;
-=======
->>>>>>> 18aa50a7da878f408fc6c4d90dadf1bcece7e44b
 
 //Literal
 STRING_LITERAL:  '\"'  '\"';
@@ -134,14 +109,9 @@ STRING_LITERAL:  '\"'  '\"';
 //Types
 INTLIT: [-]?[0-9]+;
 FLOATLIT:([0-9]+)(([.]([0-9]*
-	                  |([0-9]+'E''-'[0-9]+)))
-	             |('e' '+'? [0-9]+));
+                      |([0-9]+'E''-'[0-9]+)))
+                 |('e' '+'? [0-9]+));
 BOOLLIT:['true''false'];
 ASSIGN: ':=';
-<<<<<<< HEAD
 CONTANT_ASSIGN: '=';
 UNCLOSE_STRING: '\"'  {System.out.print("There is an unclosed string.");};
-=======
-UNCLOSE_STRING: '\"'  {System.out.print("There is an unclosed string.");};
-
->>>>>>> 18aa50a7da878f408fc6c4d90dadf1bcece7e44b
