@@ -1,5 +1,5 @@
 /*
- * student ID:
+ * student ID:1570216
  */
 
 grammar BKOOL;
@@ -25,7 +25,7 @@ class_decl: CLASS IDENTIFIER (EXTENDS IDENTIFIER)? LEFT_PARENTHESIS member* RIGH
 member: constant_decl | variable_decl | method_decl;
 method_decl: return_type (STATIC)? IDENTIFIER ((IDENTIFIER)+ COLON type)+ block_statement '}'
             | IDENTIFIER ((IDENTIFIER)+ COLON type)+ block_statement ;
-constant_decl: (STATIC)? FINAL type IDENTIFIER CONTANT_ASSIGN expression;
+constant_decl: (STATIC)? FINAL type IDENTIFIER CONSTANT_ASSIGN expression;
 variable_decl: (STATIC)? IDENTIFIER+ COLON type ;
 type: primitive_type | array_type | class_type;
 class_type: NEW IDENTIFIER;
@@ -33,16 +33,57 @@ class_type: NEW IDENTIFIER;
 array_type: (primitive_type | class_type) LEFT_SQUARE_BRACKET POSTIVE_INT RIGH_SQUARE_BRACKET;
 
 primitive_type: INTEGER | FLOAT | BOOL | STRING;
-
-
-
-block_statement: ;
-
-
 return_type: type | VOID;
 
+expression: expression_norelation | relation_exp;
+expression_norelation :arithmetic_exp | bool_exp | string_exp  
+            | index_exp | member_exp | object_creation;
 
-expression: ;
+
+
+
+arithmetic_exp: (ADD|SUB) arithmetic_exp
+               | arithmetic_exp (ADD|SUB) term
+               |term;
+term: term (MUL|MODULUS|INT_DIV|FLOAT_DIV) factor
+      | factor;
+factor: (ADD|SUB)? (INTLIT | FLOATLIT | BOOLLIT | IDENTIFIER);
+bool_exp: NOT bool_exp
+         | bool_exp (AND|OR) bool_term
+         | bool_term;
+         
+bool_term: NOT? (BOOLLIT | IDENTIFIER);
+
+relation_exp: relation_exp relational_opt relation_term
+              | relation_term;
+relation_term: type | IDENTIFIER | expression_norelation;
+relational_opt: EQUAL | NOT_EQUAL | GREATER | LESS | GREATER_EQUAL | LESS_EQUAL ;
+
+string_exp: string_exp CONCATE string_term
+           | string_term;
+string_term: STRING_LITERAL | IDENTIFIER;
+
+index_exp: array_type LEFT_SQUARE_BRACKET array_type RIGH_SQUARE_BRACKET;
+
+member_exp: array_type DOT IDENTIFIER (LEFT_BRACKET  list_exp RIGHT_BRACKET)?
+           | IDENTIFIER DOT IDENTIFIER (LEFT_BRACKET list_exp RIGHT_BRACKET)?;
+list_exp: array_type|(array_type?(SEMICOLON array_type)*);
+
+object_creation: NEW IDENTIFIER LEFT_BRACKET  list_exp RIGHT_BRACKET;
+
+//statement: block_statement | assign_statement | if_statement | while_statement
+//           | break_statement | continue_statement;
+
+block_statement: LEFT_SQUARE_BRACKET  RIGH_PARENTHESIS;
+string : STRING_LITERAL;
+
+
+
+
+
+
+
+
 
 
 
@@ -81,7 +122,11 @@ SELF: 'self';
 FINAL: 'final';
 STATIC: 'static';
 //Operator
+//UNARY_NEGATION: '-';
+//UNARY_IDENTITY: '+' ;
 ADD: '+';
+SUB: '-';
+
 MUL: '*';
 INT_DIV: '\\';
 NOT_EQUAL: '<>';
@@ -90,10 +135,10 @@ LESS_EQUAL: '<=';
 OR: '||';
 NOT: '!';
 OBJECT_CREATE: 'new';
-SUB: '-';
+
 FLOAT_DIV: '/';
 MODULUS: '%';
-EQUAL: '=';
+EQUAL: '==';
 GREATER: '>';
 GREATER_EQUAL: '>=';
 AND: '&&';
@@ -113,7 +158,7 @@ WS               :   [ \t\r\f\n]+ -> skip ;
 IDENTIFIER : [a-zA-Z_][A-Za-z_0-9]*;
 
 //Literal
-STRING_LITERAL:  '\"'  '\"';
+STRING_LITERAL:  '\"'(.)*?'\"';
 
 //Types
 POSTIVE_INT:[0-9]+;
@@ -123,5 +168,5 @@ FLOATLIT:([0-9]+)(([.]([0-9]*
                  |('e' '+'? [0-9]+));
 BOOLLIT:['true''false'];
 ASSIGN: ':=';
-CONTANT_ASSIGN: '=';
+CONSTANT_ASSIGN: '=';
 UNCLOSE_STRING: '\"'  {System.out.print("There is an unclosed string.");};
