@@ -23,20 +23,29 @@ program: class_decl+;
 
 class_decl: CLASS IDENTIFIER (EXTENDS IDENTIFIER)? LEFT_PARENTHESIS member* RIGH_PARENTHESIS  ;
 member: constant_decl | variable_decl | method_decl;
-method_decl: return_type (STATIC)? IDENTIFIER ((IDENTIFIER)+':'type)+ block_statement '}'
-            | IDENTIFIER ((IDENTIFIER)+':'type)+ block_statement ;
+method_decl: return_type (STATIC)? IDENTIFIER ((IDENTIFIER)+ COLON type)+ block_statement '}'
+            | IDENTIFIER ((IDENTIFIER)+ COLON type)+ block_statement ;
+constant_decl: (STATIC)? FINAL type IDENTIFIER CONTANT_ASSIGN expression;
+variable_decl: (STATIC)? IDENTIFIER+ COLON type ;
+type: primitive_type | array_type | class_type;
+class_type: NEW IDENTIFIER;
+
+array_type: (primitive_type | class_type) LEFT_SQUARE_BRACKET POSTIVE_INT RIGH_SQUARE_BRACKET;
+
+primitive_type: INTEGER | FLOAT | BOOL | STRING;
+
+
+
 block_statement: ;
 
-type: '2';
 
-return_type: ;
+return_type: type | VOID;
 
 
-constant_decl: (STATIC)? FINAL type IDENTIFIER CONTANT_ASSIGN expression;
 expression: ;
 
 
-variable_decl: (STATIC)? IDENTIFIER+ ':' type ;
+
 
 
 
@@ -107,6 +116,7 @@ IDENTIFIER : [a-zA-Z_][A-Za-z_0-9]*;
 STRING_LITERAL:  '\"'  '\"';
 
 //Types
+POSTIVE_INT:[0-9]+;
 INTLIT: [-]?[0-9]+;
 FLOATLIT:([0-9]+)(([.]([0-9]*
                       |([0-9]+'E''-'[0-9]+)))
